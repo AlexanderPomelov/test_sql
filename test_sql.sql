@@ -1,4 +1,10 @@
-WITH ko AS (
+WITH 
+vars AS (
+    SELECT 
+        '2020-04-01'::date AS start_date,
+        '2020-09-01'::date AS end_date
+),
+ko AS (
     SELECT 1 AS id, 'Север' AS name UNION ALL
     SELECT 2, 'Запад' UNION ALL
     SELECT 3, 'Восток' UNION ALL
@@ -89,7 +95,7 @@ final_balances AS (
     FROM
         cumulative_balances
     WHERE
-        month IN ('2020-04-01', '2020-05-01', '2020-06-01', '2020-07-01', '2020-08-01', '2020-09-01')
+        month BETWEEN (SELECT start_date FROM vars) AND (SELECT end_date FROM vars)
 )
 SELECT
     'Контрагент'::text AS "NAME",
